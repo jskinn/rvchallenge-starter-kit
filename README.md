@@ -1,5 +1,5 @@
-Robotic Vision Challenge
-==============================
+ACRV Robotic Vision Challenge 1 Starter Kit
+===========================================
 
 Welcome to the Robotic Vision Challenge.
 If you didn't come from there, you can find the challenge website at:
@@ -8,20 +8,23 @@ https://competitions.codalab.org/competitions/19742
 This starter kit contains tools to help you submit your algorithm to the challenge.
 
 
-Zip Contents:
-  README.txt            -> This file!
-  submission_builder.py -> some helpful python code to generate submissions in the correct format, see Submission Format
-  download_test_data.sh -> Bash script to download the test images into a folder called 'test_data'
-  class_list.txt        -> List of the classes used in this challenge
+Repository Contents: 
+- README.md : This file!
+- submission_builder.py : some helpful python code to generate submissions in the correct format, see Submission Format
+- download_test_data.sh : Bash script to download the test images into a folder called 'test_data'
+- class_list.txt : List of the classes used in this challenge
+- tests : Unit tests for the submission builder. This requires the evaluation code (see below)      
 
 
-## Test data
+Test data
+---------
 
 The test data for this challenge consists of 18 sequences of images, numbered 000000 to 000017.
 It can be downloaded using the included "download_test_data.sh" or using the links therein.
 There is no training data released for this challenge, train on whatever data seems appropriate.
 
-## Class List
+Class List
+----------
 
 This challenge uses a selection of the Microsoft Common Objects in Context class list,
 reduced to indoor objects. The full class list is:
@@ -32,7 +35,8 @@ reduced to indoor objects. The full class list is:
 'refrigerator', 'oven', 'sink', 'person'
 
 
-## Submission Format
+Submission Format
+-----------------
 
 The test data consists of images grouped into sequences ('000000', '000001', etc..)
 The submission format is a folder containing a json file for each sequence ('000000.json', '000001.json', etc..)
@@ -71,3 +75,12 @@ and the evaluation script will re-order your classes appropriately.
 
 'submission_builder.py' contains helper code to generate json files in this format, see the comments there for more
 exmaples.
+
+Evaluation Code
+---------------
+
+The code used to score submissions is also available, at:
+https://github.com/jskinn/rvchallenge-evaluation
+
+This code is required to run the unit tests in the tests directory,
+simply check it out in an adjacent directory called 'scoring_program'
