@@ -3,7 +3,7 @@ ACRV Robotic Vision Challenge 1 Starter Kit
 
 Welcome to the Robotic Vision Challenge.
 If you didn't come from there, you can find the challenge website at:
-https://competitions.codalab.org/competitions/19742
+https://competitions.codalab.org/competitions/20940
 
 This starter kit contains tools to help you submit your algorithm to the challenge.
 
