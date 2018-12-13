@@ -1,0 +1,33 @@
+none
+bottle
+cup
+knife
+bowl
+wine glass
+fork
+spoon
+banana
+apple
+orange
+cake
+potted plant
+mouse
+keyboard
+laptop
+cell phone
+book
+pen
+clock
+chair
+potted plant
+dining table
+couch
+bed
+toilet
+television
+microwave
+toaster
+refrigerator
+oven
+sink
+person
