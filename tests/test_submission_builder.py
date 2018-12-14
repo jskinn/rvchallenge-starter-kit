@@ -201,8 +201,10 @@ class TestSubmissionBuilder(th.ExtendedTestCase):
                 self.assertEqual(len(submission[sequence_name][img_idx]), len(img_detections))
                 for det_idx in range(len(img_detections)):
                     sub_det = submission[sequence_name][img_idx][det_idx]
-                    expected_classes = np.zeros(len(class_list.CLASSES))
+                    expected_classes = np.zeros(len(class_list.CLASSES), dtype=np.float32)
                     expected_classes[1:5] = sub_det['classes']
+                    if not np.all(np.equal(expected_classes, img_detections[det_idx].class_list)):
+                        print("Got a problem boss")
                     self.assertNPEqual(expected_classes, img_detections[det_idx].class_list)
                     self.assertNPEqual(sub_det['bbox'], img_detections[det_idx].box)
                     if 'covars' in sub_det:
