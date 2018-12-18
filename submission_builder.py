@@ -86,7 +86,7 @@ def make_detection(class_probabilities, xmin, ymin, xmax, ymax, upper_left_cov=N
      [xy, y^2]]
     The matrix must be positive semi-definite, and the diagonal elements must be greater than 1
 
-    :param class_confidences: A list of class confidences as floating points,
+    :param class_probabilities: A list of class confidences as floating points,
     must match the list of classes (see below) and sum to at most 1.
     :param xmin: The x coordinate of the upper left corner (mean)
     :param ymin: The y coordinate of the upper left corner (mean)
@@ -133,7 +133,7 @@ def make_detection(class_probabilities, xmin, ymin, xmax, ymax, upper_left_cov=N
 
 def make_detection_height_width(class_probabilities, x, y, width, height, upper_left_cov=None, lower_right_cov=None):
     """
-    Alternative form of make detection, above. instead taking
+    Alternative form of make detection, above. instead taking the bounding box as x, y, width, height
     :param class_probabilities: A list of probabilities for each class
     :param x: The x coordinate of the upper-left corner
     :param y: The y coordinate of the upper-left corner
@@ -163,7 +163,7 @@ def make_sequence_output(detections, classes):
 def make_simple_covariance(xvar, yvar):
     """
     Make simple spherical covariance, as can be passed as upper_left_cov or lower_right_cov.
-    The resulting covariance is eliptical in 2-d and axis-aligned, there is no correlation component
+    The resulting covariance is elliptical in 2-d and axis-aligned, there is no correlation component
     :param xvar: Horizontal covariance
     :param yvar: Vertical covariance
     :return: A 2x2 covariance matrix, as a list of lists.
@@ -196,7 +196,7 @@ def is_positive_definite(mat):
     """
     Check if a matrix is positive semi-definite, that is, all it's eigenvalues are positive.
     All covariance matrices must be positive semi-definite.
-    Only works on symmetric matricies (due to eigh), so check that first
+    Only works on symmetric matrices (due to eigh), so check that first
     :param mat:
     :return:
     """
@@ -210,19 +210,20 @@ def is_positive_definite(mat):
 
 class SubmissionWriter(object):
     """
-    A helper class to handle writing Vision Challenge submissions in the correct format.
+    A helper class to handle writing ACRV Robotic Vision Challenge 1 submissions in the correct format.
     Simply create the object pointing to the desired output directory,
     and then call 'add_detection' for each detection, 'next_image' after each image,
     and 'save_sequence' after each sequence. e.g.:
     ```
     writer = submission_builder.SubmissionWriter('submission', classes)
     for sequence_name in os.listdir('test_dir'):
-        for image_file in os.listdir(os.path.join('test_dir', sequence_name)):
-            detections = do_detection(image_file, ...)
-            for detection in detections:
-                writer.add_detection(...)
-            writer.next_image()
-        writer.save_sequence(sequence_name)
+        if not sequence_name.endswith('.zip'):
+            for image_file in os.listdir(os.path.join('test_dir', sequence_name)):
+                detections = do_detection(image_file, ...)
+                for detection in detections:
+                    writer.add_detection(...)
+                writer.next_image()
+            writer.save_sequence(sequence_name)
     ```
 
 
@@ -249,10 +250,8 @@ class SubmissionWriter(object):
         :param ymax: The y coordinate of the lower right corner (mean)
         :param upper_left_cov: 2x2 covariance matrix for the upper left corner, as a list of lists
         :param lower_right_cov: 2x2 covariance matrix for the lower right corner, as a list of lists
-        :param class_confidences: A list of class confidences as floats,
-                                  which correspond to the matching entry in the class list
-        :param image_height: The height of the image
-        :param image_width: The width of the image
+        :param class_probabilities: A list of class confidences as floats,
+                                    which correspond to the matching entry in the class list
         :return:
         """
         if len(class_probabilities) != len(self.class_list):
