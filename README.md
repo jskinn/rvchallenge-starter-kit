@@ -12,7 +12,6 @@ Repository Contents:
 - README.md : This file!
 - submission_builder.py : some helpful python code to generate submissions in the correct format, see Submission Format
 - download_test_data.sh : Bash script to download the test images into a folder called 'test_data'
-- download_training_data.sh : Bash script to download the training sequences into a folder called 'training_data'
 - class_list.txt : List of the classes used in this challenge
 - tests : Unit tests for the submission builder. This requires the evaluation code (see below)      
 
