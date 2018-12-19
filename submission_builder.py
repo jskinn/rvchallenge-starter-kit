@@ -102,10 +102,12 @@ def make_detection(class_probabilities, xmin, ymin, xmax, ymax, upper_left_cov=N
         raise ValueError("ymax is less than ymin")
     if sum(class_probabilities) > 1 + 1e-14:
         raise ValueError("The class probabilities sum to more than 1")
+    if np is not None and isinstance(class_probabilities, np.ndarray):
+        class_probabilities = class_probabilities.tolist()
 
     detection = {
         'label_probs': class_probabilities,
-        'bbox': [xmin, ymin, xmax, ymax]
+        'bbox': [float(xmin), float(ymin), float(xmax), float(ymax)]
     }
     if upper_left_cov is not None and lower_right_cov is not None:
         # Validate the covariances
@@ -122,6 +124,11 @@ def make_detection(class_probabilities, xmin, ymin, xmax, ymax, upper_left_cov=N
             raise ValueError("The lower-right covariance is not symmetric")
         if not is_positive_definite(lower_right_cov):
             raise ValueError("The lower-right covariance is not positive definite")
+
+        if np is not None and isinstance(upper_left_cov, np.ndarray):
+            upper_left_cov = upper_left_cov.tolist()
+        if np is not None and isinstance(lower_right_cov, np.ndarray):
+            lower_right_cov = lower_right_cov.tolist()
 
         detection['covars'] = [upper_left_cov, lower_right_cov]
     elif upper_left_cov is not None and lower_right_cov is None:

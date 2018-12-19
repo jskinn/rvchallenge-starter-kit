@@ -191,7 +191,120 @@ class TestSubmissionBuilder(th.ExtendedTestCase):
             writer.save_sequence(sequence_name)
 
         # Read that submission using the submission loader, and check that it's the same
-        loaded_sequences = submission_loader.read_submission(self.temp_dir)
+        loaded_sequences = submission_loader.read_submission(self.temp_dir, set(submission.keys()))
+        self.assertEqual(set(submission.keys()), set(loaded_sequences.keys()))
+        for sequence_name, generator in loaded_sequences.items():
+            detections = list(generator)
+            self.assertEqual(len(submission[sequence_name]), len(detections))
+            for img_idx in range(len(detections)):
+                img_detections = list(detections[img_idx])
+                self.assertEqual(len(submission[sequence_name][img_idx]), len(img_detections))
+                for det_idx in range(len(img_detections)):
+                    sub_det = submission[sequence_name][img_idx][det_idx]
+                    expected_classes = np.zeros(len(class_list.CLASSES), dtype=np.float32)
+                    expected_classes[1:5] = sub_det['classes']
+                    if not np.all(np.equal(expected_classes, img_detections[det_idx].class_list)):
+                        print("Got a problem boss")
+                    self.assertNPEqual(expected_classes, img_detections[det_idx].class_list)
+                    self.assertNPEqual(sub_det['bbox'], img_detections[det_idx].box)
+                    if 'covars' in sub_det:
+                        self.assertNPEqual(sub_det['covars'], img_detections[det_idx].covs)
+
+    def test_integration_numpy(self):
+        # Make an example submission
+        submission = {
+            '000000': [
+                [{
+                    'classes': np.array([0.1, 0.4, 0.2, 0.3]),
+                    'bbox': np.array([1, 2, 14, 15])
+                }, {
+                    'classes': np.array([0.8, 0.1, 0.05, 0.05]),
+                    'bbox': np.array([1, 2, 14, 15]),
+                    'covars': np.array([[[1, 0], [0, 1]], [[1, 0], [0, 1]]])
+                }],
+                [],
+                [{
+                    'classes': np.array([0.4, 0.1, 0.3, 0.2]),
+                    'bbox': np.array([1, 2, 14, 15]),
+                    'covars': np.array([[[10, 2], [2, 10]], [[1, 0], [0, 100]]])
+                }, {
+                    'classes': np.array([0.1, 0.7, 0.1, 0.1]),
+                    'bbox': np.array([1, 2, 14, 15]),
+                    'covars': np.array([[[5, 0], [0, 15]], [[16, 1], [1, 8]]])
+                }],
+                [{
+                    'classes': np.array([0.4, 0.1, 0.4, 0.1]),
+                    'bbox': np.array([11, 12, 44, 55]),
+                    'covars': np.array([[[15, 0], [0, 21]], [[126, 2], [2, 18]]])
+                }],
+                [{
+                    'classes': np.array([0.9, 0.01, 0.04, 0.05]),
+                    'bbox': np.array([13, 14, 46, 57]),
+                    'covars': np.array([[[51, 0], [0, 15]], [[1, 1], [1, 1]]])
+                }]
+            ],
+            '000006': [
+                [],
+                [{
+                    'classes': np.array([0.1, 0.4, 0.2, 0.3]),
+                    'bbox': np.array([1, 2, 14, 15]),
+                    'covars': np.array([[[1, 0], [0, 1]], [[1, 0], [0, 1]]])
+                }, {
+                    'classes': np.array([0.8, 0.1, 0.05, 0.05]),
+                    'bbox': np.array([1, 2, 14, 15])
+                }],
+                [],
+                [{
+                    'classes': np.array([0.4, 0.1, 0.3, 0.2]),
+                    'bbox': np.array([11, 12, 44, 55]),
+                    'covars': np.array([[[10, 2], [2, 10]], [[1, 0], [0, 100]]])
+                }, {
+                    'classes': np.array([0.1, 0.7, 0.1, 0.1]),
+                    'bbox': np.array([1, 2, 14, 15]),
+                    'covars': np.array([[[5, 0], [0, 15]], [[16, 1], [1, 8]]])
+                }],
+                [],
+                [{
+                    'classes': np.array([0.4, 0.1, 0.4, 0.1]),
+                    'bbox': np.array([1, 2, 14, 15])
+                }, {
+                    'classes': np.array([0.9, 0.01, 0.04, 0.05]),
+                    'bbox': np.array([13, 14, 46, 57]),
+                    'covars': np.array([[[51, 0], [0, 15]], [[2, 1], [1, 2]]])
+                }],
+                []
+            ]
+        }
+        classes = class_list.CLASSES[1:5]
+
+        # Write our submission to fle
+        writer = submission_builder.SubmissionWriter(self.temp_dir, classes)
+        for sequence_name, sequence_data in submission.items():
+            for detections in sequence_data:
+                for detection in detections:
+                    if 'covars' in detection:
+                        writer.add_detection(
+                            class_probabilities=detection['classes'],
+                            xmin=detection['bbox'][0],
+                            ymin=detection['bbox'][1],
+                            xmax=detection['bbox'][2],
+                            ymax=detection['bbox'][3],
+                            upper_left_cov=detection['covars'][0],
+                            lower_right_cov=detection['covars'][1]
+                        )
+                    else:
+                        writer.add_detection(
+                            class_probabilities=detection['classes'],
+                            xmin=detection['bbox'][0],
+                            ymin=detection['bbox'][1],
+                            xmax=detection['bbox'][2],
+                            ymax=detection['bbox'][3]
+                        )
+                writer.next_image()
+            writer.save_sequence(sequence_name)
+
+        # Read that submission using the submission loader, and check that it's the same
+        loaded_sequences = submission_loader.read_submission(self.temp_dir, set(submission.keys()))
         self.assertEqual(set(submission.keys()), set(loaded_sequences.keys()))
         for sequence_name, generator in loaded_sequences.items():
             detections = list(generator)
