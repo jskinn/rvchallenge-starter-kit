@@ -11,7 +11,8 @@ This starter kit contains tools to help you submit your algorithm to the challen
 Repository Contents: 
 - README.md : This file!
 - submission_builder.py : some helpful python code to generate submissions in the correct format, see Submission Format
-- download_test_data.sh : Bash script to download the test images into a folder called 'test_data'
+- subission_validator.py : An executable python script to validate a submission before upload.
+- download_test_data.sh : Bash script to download the test images into a folder called 'test_data', takes about 24 GB.
 - class_list.txt : List of the classes used in this challenge
 - tests : Unit tests for the submission builder. This requires the evaluation code (see below)      
 
@@ -21,6 +22,7 @@ Test data
 
 The test data for this challenge consists of 18 sequences of images, numbered 000000 to 000017.
 It can be downloaded using the included "download_test_data.sh" or using the links therein.
+The total unzipped size is about 24 Gigabytes.
 There is no training data released for this challenge, train on whatever data seems appropriate.
 
 Class List
@@ -75,6 +77,26 @@ and the evaluation script will re-order your classes appropriately.
 
 'submission_builder.py' contains helper code to generate json files in this format, see the comments there for more
 exmaples.
+
+
+Submission Validator
+--------------------
+
+The script 'submission_validator.py' can be used to validate a submission before it is uploaded.
+It contains code very similar to that used by the evaluation code to read the submission,
+and will produce most of the same errors.
+
+To validate a submission, simply execute it with the submission folder as the first argument.
+```bash
+starter_kit/submission_validator.py submission/ 
+```
+This will attempt to read the submission and produce errors when it encounters invalid values.
+For further explanation of these errors, see the troubleshooting page of the competition website. 
+
+Warnings are provided when a given detection is ignored due to it's total class probability being too low,
+or when the total class probability is greater than 1.
+These issues will not prevent your submission from being evaluated, but may be something you want to fix.
+If there are too many warnings, you can suppress them with the `-q` argument. 
 
 Evaluation Code
 ---------------
