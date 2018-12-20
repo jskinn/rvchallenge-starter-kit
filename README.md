@@ -51,8 +51,8 @@ Each json file should contain the following structure:
       {
         "bbox": [x1, y1, x2, y2],
         "covars": [
-          [[xx1, xy1],[xy1, yy1],
-          [[xx2, xy2],[xy2, yy2]
+          [[xx1, xy1],[xy1, yy1]],
+          [[xx2, xy2],[xy2, yy2]]
         ],
         "label_probs": [<an ordered list of probabilities for each class>]
       },
