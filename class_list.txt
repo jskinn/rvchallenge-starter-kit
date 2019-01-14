@@ -16,10 +16,8 @@ keyboard
 laptop
 cell phone
 book
-pen
 clock
 chair
-potted plant
 dining table
 couch
 bed
