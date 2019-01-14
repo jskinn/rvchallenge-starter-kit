@@ -32,8 +32,8 @@ This challenge uses a selection of the Microsoft Common Objects in Context class
 reduced to indoor objects. The full class list is:
 
 'none', 'bottle', 'cup', 'knife', 'bowl', 'wine glass', 'fork', 'spoon', 'banana', 'apple', 'orange', 'cake',
-'potted plant', 'mouse', 'keyboard', 'laptop', 'cell phone', 'book', 'pen', 'clock',
-'chair', 'potted plant', 'dining table', 'couch', 'bed', 'toilet', 'television', 'microwave', 'toaster',
+'potted plant', 'mouse', 'keyboard', 'laptop', 'cell phone', 'book', 'clock',
+'chair', 'dining table', 'couch', 'bed', 'toilet', 'television', 'microwave', 'toaster',
 'refrigerator', 'oven', 'sink', 'person'
 
 
