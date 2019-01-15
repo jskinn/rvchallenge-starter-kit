@@ -311,6 +311,26 @@ class TestSubmissionLoaderReadSubmission(th.ExtendedTestCase):
         self.assertIn('folder_a/000000.json', msg)
         self.assertIn('folder_b/000000.json', msg)
 
+    def test_no_error_if_testing_subset(self):
+        all_idx = set(range(18))
+        excluded = {3, 4, 5, 13, 17}
+        subset = [idx for idx in all_idx - excluded]
+        self.make_submission({'{0:06}'.format(idx): [] for idx in subset})
+
+        submission_validator.validate_submission(self.temp_dir, sequence_ids=[idx for idx in subset])
+
+    def test_raise_error_if_missing_sequence_in_subset(self):
+        all_idx = set(range(18))
+        excluded = {3, 4, 5, 13, 17}
+        subset = [idx for idx in all_idx - excluded]
+        self.make_submission({'{0:06}'.format(idx): [] for idx in subset[:-1]})
+
+        with self.assertRaises(ValueError) as cm:
+            submission_validator.validate_submission(self.temp_dir,
+                                                     sequence_ids=subset)
+        msg = str(cm.exception)
+        self.assertIn('{0:06}'.format(16), msg)
+
 
 def patch_classes(detections):
     # Patch the label probabilities to be the right length

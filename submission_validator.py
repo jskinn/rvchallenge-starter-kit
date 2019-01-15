@@ -121,7 +121,7 @@ SYNONYMS = {
 }
 
 
-def validate_submission(directory):
+def validate_submission(directory, sequence_ids=np.arange(18)):
     """
     Validate all the submissions for all the sequences outlined in the given folder.
     Each sequence's detections are provided in a file ending with 'detections.json'.
@@ -137,13 +137,17 @@ def validate_submission(directory):
             or all zeros (regular BBox).
     Order of list of lists should correspond with ground truth image order.
     If an image does not have any detections, entry should be an empty list.
+    Users can choose to only test a subset of sequences identified by sequence_ids.
+    Note that they must have valid submissions for all sequences before submission to the competition.
 
     :param directory: location of each sequence's submission json file.
+    :param sequence_ids: list of sequence identification numbers for all sequences to be validated.
+    Defaults to all 18 sequence ids needed for submission to competition ([0,1,2, ..., 17]).
     """
     if not os.path.isdir(directory):
         raise ValueError("Submission directory {0} does not exist".format(directory))
 
-    expected_sequence_names = {'{0:06}'.format(idx) for idx in range(18)}
+    expected_sequence_names = {'{0:06}'.format(idx) for idx in sequence_ids}
     sequences = {}
     for root, _, files in os.walk(directory):
         for sequence_name in expected_sequence_names:
