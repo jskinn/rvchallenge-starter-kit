@@ -112,10 +112,14 @@ def make_detection(class_probabilities, xmin, ymin, xmax, ymax, upper_left_cov=N
         raise ValueError("xmax is less than xmin")
     if ymax < ymin:
         raise ValueError("ymax is less than ymin")
-    if sum(class_probabilities) > 1 + 1e-7:
-        raise ValueError("The class probabilities sum to more than 1")
+    
+    # Normalize the class probabilities and convert them to a list
     if np is not None and isinstance(class_probabilities, np.ndarray):
+        class_probabilities = class_probabilities / np.sum(class_probabilities)
         class_probabilities = class_probabilities.tolist()
+    else:
+        total_prob = sum(class_probabilities)
+        class_probabilities = [p / total_prob for p in class_probabilities]
 
     detection = {
         'label_probs': class_probabilities,

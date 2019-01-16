@@ -46,11 +46,12 @@ class TestMakeDetection(unittest.TestCase):
         self.assertIn('ymax', msg)
         self.assertIn('ymin', msg)
 
-    def test_errors_if_probabilities_greater_than_1(self):
-        with self.assertRaises(ValueError) as cm:
-            submission_builder.make_detection([0.1, 0.2, 0.3, 0.4, 0.5], 1, 3, 12, 14)
-        msg = str(cm.exception)
-        self.assertIn('probabilities', msg)
+    def test_normalizes_probabilities_greater_than_1(self):
+        probs = [0.1, 0.2, 0.3, 0.4, 0.5]
+        total_prob = sum(probs)
+        normalized_probs = [v / total_prob for v in probs]
+        detection = submission_builder.make_detection(probs, 1, 3, 12, 14)
+        self.assertEqual(detection['label_probs'], normalized_probs)
 
     def test_errors_if_only_one_covar_given(self):
         cov = [[3, 1], [1, 4]]
