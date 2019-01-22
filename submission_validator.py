@@ -230,7 +230,6 @@ def validate_detections(img_dets, class_mapping, num_classes=len(CLASSES), img_i
 
     :param img_dets: list of detections given as dictionaries.
     Individual detection dictionaries have the keys:
-        'img_size': (height x width)
         'img_num': int identifying which image the detection is a part of
         'label_probs': full list of probabilities that the detection is describing each of the classes
         'bbox': coordinates of the bounding box corners [left, top, right, bottom]
