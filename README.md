@@ -31,7 +31,7 @@ Training/Validation Data
 
 A small sequence of data is provided with ground truth segmentations for training and validation.
 The ground truth is in the same format as is read by the evaluation code (https://github.com/jskinn/rvchallenge-evaluation),
-amd can be used to check your output locally before submission to the challenge.
+and can be used to check your output locally before submission to the challenge.
 
 The data is generated using the same rendering engine and camera motion code as is used for the test data,
 but is recorded in a separate environment with distinct instances of each of the classes.
