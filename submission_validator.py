@@ -300,7 +300,7 @@ def is_positive_semi_definite(mat):
     :return: True iff the matrix is positive semi-definite
     """
     eigvals, _ = np.linalg.eigh(mat)
-    return np.all(eigvals >= 0)
+    return np.all(eigvals >= -1e-14)
 
 
 def make_error_msg(msg, sequence_name, img_idx, det_idx):

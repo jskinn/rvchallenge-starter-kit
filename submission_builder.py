@@ -226,7 +226,7 @@ def is_positive_definite(mat):
     if np is not None:
         mat = np.asarray(mat)
         eigvals, _ = np.linalg.eigh(mat)
-        return np.all(eigvals >= 0)
+        return np.all(eigvals >= -1e-14)
     # Numpy is unavailable, assume the matrix is valid
     return True
 
