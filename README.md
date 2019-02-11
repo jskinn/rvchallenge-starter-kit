@@ -13,7 +13,7 @@ Repository Contents:
 - submission_builder.py : some helpful python code to generate submissions in the correct format, see Submission Format
 - subission_validator.py : An executable python script to validate a submission before upload.
 - download_test_data.sh : Bash script to download the test images into a folder called 'test_data', takes about 24 GB.
-- download_training_data.sh : Bash script to download training/validation data into a folder called 'training_data', takes about 3.2GB.
+- download_validation_data.sh : Bash script to download training/validation data into a folder called 'validation_data', takes about 3.2GB.
 - class_list.txt : List of the classes used in this challenge
 - tests : Unit tests for the submission builder. This requires the evaluation code (see below)      
 
@@ -26,7 +26,7 @@ It can be downloaded using the included "download_test_data.sh" or using the lin
 The total unzipped size is about 24 Gigabytes.
 There is no training data released for this challenge, train on whatever data seems appropriate.
 
-Training/Validation Data
+Validation Data
 ------------------------
 
 A small sequence of data is provided with ground truth segmentations for training and validation.
