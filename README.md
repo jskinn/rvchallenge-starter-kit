@@ -14,11 +14,12 @@ Repository Contents:
 - subission_validator.py : An executable python script to validate a submission before upload.
 - download_test_data.sh : Bash script to download the test images into a folder called 'test_data', takes about 24 GB.
 - download_validation_data.sh : Bash script to download training/validation data into a folder called 'validation_data', takes about 3.2GB.
+- download_test_dev_data.sh: Bash script to download test-dev data into a folder called 'test_dev_data', takes about 57.5 GB.
 - class_list.txt : List of the classes used in this challenge
 - tests : Unit tests for the submission builder. This requires the evaluation code (see below)      
 
 
-Test data
+Test Data
 ---------
 
 The test data for this challenge consists of 18 sequences of images, numbered 000000 to 000017.
@@ -35,6 +36,15 @@ and can be used to check your output locally before submission to the challenge.
 
 The data is generated using the same rendering engine and camera motion code as is used for the test data,
 but is recorded in a separate environment with distinct instances of each of the classes.
+
+Test-dev Data
+-------------
+
+A set of 18 sequences of images, numbered 000000 to 000017 with the same variations present in the test data.
+Collected using different environments from the challenge test data, this is meant for continuous evaluation.
+It can be downloaded using the included "download_test_dev_data.sh" or using the links therein.
+The total unzipped size is about 57.5 GB (more average frames per sequence than test set).
+There is no ground-truth supplied for this data and should only be used for testing on the continuous challenge (https://competitions.codalab.org/competitions/21727) 
 
 Class List
 ----------
